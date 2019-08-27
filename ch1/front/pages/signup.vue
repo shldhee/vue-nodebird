@@ -5,13 +5,7 @@
         <v-container>
           <v-subheader>회원가입</v-subheader>
           <v-form ref="form" v-model="valid" @submit.prevent="onSubmitForm">
-            <v-text-field
-              v-model="email"
-              label="이메일"
-              type="email"
-              :rules="emailRules"
-              required
-            />
+            <v-text-field v-model="email" label="이메일" type="email" :rules="emailRules" required />
             <v-text-field
               v-model="password"
               label="비밀번호"
@@ -88,7 +82,8 @@ export default {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('users/signUp', {
           nickname: this.nickname,
-          email: this.email
+          email: this.email,
+          password: this.password
         })
       }
     }
