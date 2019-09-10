@@ -5,12 +5,7 @@
         <v-container>
           <v-subheader>내 프로필</v-subheader>
           <v-form v-model="valid" @submit.prevent="onChangeNickname">
-            <v-text-field
-              label="닉네임"
-              required
-              v-model="nickname"
-              :rules="nicknameRules"
-            />
+            <v-text-field label="닉네임" required v-model="nickname" :rules="nicknameRules" />
             <v-btn dark color="blue" type="submit">수정</v-btn>
           </v-form>
         </v-container>
@@ -25,8 +20,7 @@
             dark
             color="blue"
             style="width: 100%"
-            >더보기</v-btn
-          >
+          >더보기</v-btn>
         </v-container>
       </v-card>
       <v-card style="margin-bottom: 20px">
@@ -39,8 +33,7 @@
             dark
             color="blue"
             style="width: 100%"
-            >더보기</v-btn
-          >
+          >더보기</v-btn>
         </v-container>
       </v-card>
     </v-container>
@@ -77,7 +70,7 @@ export default {
   },
   fetch({ store }) {
     store.dispatch('users/loadFollowers')
-    store.dispatch('users/loadFollowings')
+    return store.dispatch('users/loadFollowings')
   },
   methods: {
     onChangeNickname() {

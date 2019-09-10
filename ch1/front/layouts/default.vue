@@ -8,32 +8,15 @@
         <v-spacer />
         <v-toolbar-items>
           <v-form @submit.prevent="onSearchHashtag">
-            <div
-              :style="{ display: 'flex', height: '100%', alignItems: 'center' }"
-            >
-              <v-text-field
-                v-model="hashtag"
-                label="검색"
-                hide-details
-                prepend-icon="mdi-magnify"
-              />
+            <div :style="{ display: 'flex', height: '100%', alignItems: 'center' }">
+              <v-text-field v-model="hashtag" label="검색" hide-details prepend-icon="mdi-magnify" />
             </div>
           </v-form>
 
-          <v-btn
-            text
-            nuxt
-            to="/profile"
-            :style="{ display: 'flex', alignItems: 'center' }"
-          >
+          <v-btn text nuxt to="/profile" :style="{ display: 'flex', alignItems: 'center' }">
             <div>프로필</div>
           </v-btn>
-          <v-btn
-            text
-            nuxt
-            to="/signup"
-            :style="{ display: 'flex', alignItems: 'center' }"
-          >
+          <v-btn text nuxt to="/signup" :style="{ display: 'flex', alignItems: 'center' }">
             <div>회원가입</div>
           </v-btn>
         </v-toolbar-items>
