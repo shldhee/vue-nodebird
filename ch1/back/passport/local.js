@@ -10,7 +10,6 @@ module.exports = () => {
         usernameField: "email",
         passwordField: "password"
       },
-
       async (email, password, done) => {
         try {
           const exUser = await db.User.findOne({ where: { email } }); // email찾기

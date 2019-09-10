@@ -49,6 +49,11 @@ app.get("/", (req, res) => {
 app.use("/user", userRouter);
 app.use("/post", postRouter);
 
+app.post("/post", (req, res) => {
+  if (req.isAuthenticated()) {
+  }
+});
+
 app.listen(3085, () => {
   console.log(`백엔드 서버 ${3085}번 포트에서 작동중`);
 });
