@@ -69,8 +69,10 @@ export default {
     }
   },
   fetch({ store }) {
-    store.dispatch('users/loadFollowers')
-    return store.dispatch('users/loadFollowings')
+    return Promise.all([
+      store.dispatch('users/loadFollowings', { offset: 0 }),
+      store.dispatch('users/loadFollowers', { offset: 0 })
+    ])
   },
   methods: {
     onChangeNickname() {
@@ -78,14 +80,14 @@ export default {
         nickname: this.nickname
       })
     },
-    removeFollowing(id) {
-      this.$store.dispatch('users/removeFollowing', {
-        id
+    removeFollowing(userId) {
+      this.$store.dispatch('users/unfollow', {
+        userId
       })
     },
-    removeFollower(id) {
+    removeFollower(userId) {
       this.$store.dispatch('users/removeFollower', {
-        id
+        userId
       })
     },
     loadFollowings() {

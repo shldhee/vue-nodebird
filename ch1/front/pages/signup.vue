@@ -80,11 +80,20 @@ export default {
   methods: {
     onSubmitForm() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('users/signUp', {
-          nickname: this.nickname,
-          email: this.email,
-          password: this.password
-        })
+        this.$store
+          .dispatch('users/signUp', {
+            nickname: this.nickname,
+            email: this.email,
+            password: this.password
+          })
+          .then(() => {
+            this.$router.push({
+              path: '/'
+            })
+          })
+          .catch(() => {
+            alert('회원가입 실패')
+          })
       }
     }
   },

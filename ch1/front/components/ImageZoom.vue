@@ -4,7 +4,7 @@
       <h1>상세 이미지</h1>
       <v-icon id="close-btn" @click="closeModal">mdi-close</v-icon>
     </header>
-    <div class="carousel-wrapper">
+    <div id="carousel-wrapper">
       <v-carousel>
         <v-carousel-item v-for="img in images" :key="img.src">
           <v-sheet>
@@ -69,4 +69,3 @@ export default {
   height: auto !important;
 }
 </style>
-© 2019 GitHub, Inc.

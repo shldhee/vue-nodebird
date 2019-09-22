@@ -1,28 +1,20 @@
 const express = require("express");
-const multer = require("multer");
-const { isLoggedIn } = require("./middlewares");
-const path = require("path");
-
 const db = require("../models");
-
 const router = express.Router();
 
-router.delete("/:id", async (req, res, next) => {
-  try {
-    await db.Post.destory({
-      where: {
-        id: req.params.id
-      }
-    });
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
 router.get("/", async (req, res, next) => {
   // GET /posts?offset=10&limit=10
+  let where = {};
+  if (parseInt(req.query.lastId, 10)) {
+    where = {
+      id: {
+        [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10)
+      }
+    };
+  }
   try {
     const posts = await db.Post.findAll({
+      where,
       include: [
         {
           model: db.User,
@@ -30,10 +22,27 @@ router.get("/", async (req, res, next) => {
         },
         {
           model: db.Image
+        },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"]
+        },
+        {
+          model: db.Post,
+          as: "Retweet",
+          include: [
+            {
+              model: db.User,
+              attributes: ["id", "nickname"]
+            },
+            {
+              model: db.Image
+            }
+          ]
         }
       ],
       order: [["createdAt", "DESC"]],
-      offset: parseInt(req.query.offset, 10) || 0,
       limit: parseInt(req.query.limit, 10) || 10
     });
     res.json(posts);

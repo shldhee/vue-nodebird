@@ -19,14 +19,8 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.state.users.me
-    },
     mainPosts() {
       return this.$store.state.posts.mainPosts
-    },
-    hasMorePosts() {
-      return this.$store.state.posts.hasMorePosts
     }
   },
   methods: {
@@ -41,10 +35,14 @@ export default {
       }
     }
   },
-  fetch({ store }) {
-    store.dispatch('posts/loadPosts')
+  fetch({ store, params }) {
+    return store.dispatch('posts/loadHashtagPosts', {
+      hashtag: encodeURIComponent(params.id),
+      reset: true
+    })
   },
   mounted() {
+    // this.$route.params.id
     window.addEventListener('scroll', this.onScroll)
   },
   beforeDestroy() {

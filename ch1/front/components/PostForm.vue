@@ -66,7 +66,9 @@ export default {
             this.success = true
             this.successMessages = '게시글 등록 성공!'
           })
-          .catch(() => {})
+          .catch(err => {
+            console.error(err)
+          })
       }
     },
     onClickImageUpload() {

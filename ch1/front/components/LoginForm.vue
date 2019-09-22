@@ -3,13 +3,7 @@
     <v-card>
       <v-form ref="form" v-model="valid" @submit.prevent="onSubmitForm">
         <v-container>
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="이메일"
-            type="email"
-            required
-          />
+          <v-text-field v-model="email" :rules="emailRules" label="이메일" type="email" required />
           <v-text-field
             v-model="password"
             :rules="passwordRules"
@@ -28,6 +22,11 @@
       <v-container>
         {{ me.nickname }} 로그인이 되었습니다.
         <v-btn @click="onLogOut">로그아웃</v-btn>
+        <v-row>
+          <v-col cols="4">{{me.Followings.length}} 팔로잉</v-col>
+          <v-col cols="4">{{me.Followers.length}} 팔로워</v-col>
+          <v-col cols="4">{{me.Posts.length}} 게시글</v-col>
+        </v-row>
       </v-container>
     </v-card>
   </v-container>
@@ -53,7 +52,7 @@ export default {
         this.$store
           .dispatch('users/logIn', {
             email: this.email,
-            nickname: '더키'
+            password: this.password
           })
           .then(() => {
             this.$router.push({ path: '/' })

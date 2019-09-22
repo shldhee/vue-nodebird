@@ -10,6 +10,8 @@ const db = require("./models");
 const passportConfig = require("./passport");
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
+const hashtagRouter = require("./routes/hashtag");
 const app = express();
 
 db.sequelize.sync();
@@ -19,14 +21,16 @@ app.use(morgan("dev"));
 // 이게 있어야만 프론트에서 다른 서버로 요청을 보낼수 있다.
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3080",
     credentials: true
   })
 );
 
 app.use("/", express.static("uploads"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookie("cookiesecret"));
 app.use(
   session({
@@ -48,10 +52,11 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
+app.use("/hashtag", hashtagRouter);
 
 app.post("/post", (req, res) => {
-  if (req.isAuthenticated()) {
-  }
+  if (req.isAuthenticated()) {}
 });
 
 app.listen(3085, () => {

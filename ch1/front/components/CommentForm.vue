@@ -1,10 +1,5 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    style="position: relative"
-    @submit.prevent="onSubmitForm"
-  >
+  <v-form ref="form" v-model="valid" style="position: relative" @submit.prevent="onSubmitForm">
     <v-textarea
       v-model="content"
       filled
@@ -53,12 +48,8 @@ export default {
       if (this.$refs.form.validate()) {
         this.$store
           .dispatch('posts/addComment', {
-            id: Date.now(),
             postId: this.postId,
-            content: this.content,
-            User: {
-              nickname: this.me.nickname
-            }
+            content: this.content
           })
           .then(() => {
             this.content = ''
