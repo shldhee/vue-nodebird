@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "PORT=80 NODE_ENV=production node server",
     "lint": "eslint **/*"
   },
   "author": "",
