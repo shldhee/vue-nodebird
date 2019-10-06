@@ -1,26 +1,27 @@
-{
+const dotenv = reuiqre('dotenv');
+
+dotenv.config();
+
+module.exports = {
   "development": {
     "username": "root",
-    "password": "",
+    "password": process.env.DB_PASSWORD,
     "database": "nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": process.env.DB_PASSWORD,
+    "database": "nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": process.env.DB_PASSWORD,
+    "database": "nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
   }
 }

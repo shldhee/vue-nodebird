@@ -5,6 +5,11 @@ const passport = require("passport");
 const session = require("express-session");
 const cookie = require("cookie-parser");
 const morgan = require("morgan");
+const hpp = require('hpp');
+const helmet = require('helmet');
+const dotenv = require('dotenv')
+
+const prod = process.env.NODE_ENV === 'production';
 
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -14,34 +19,49 @@ const postsRouter = require("./routes/posts");
 const hashtagRouter = require("./routes/hashtag");
 const app = express();
 
-db.sequelize.sync({
-  force: true
-});
+dotenv.config();
+
+db.sequelize.sync();
 passportConfig();
 
-app.use(morgan("dev"));
+if (prod) {
+  app.use(helmet());
+  app.use(hpp());
+  app.use(morgan("combined"));
+  app.use(
+    cors({
+      origin: "http://doki3.com",
+      credentials: true
+    })
+  );
+} else {
+  app.use(morgan("dev"));
+  app.use(
+    cors({
+      origin: "http://localhost:3080",
+      credentials: true
+    })
+  );
+}
+
 // 이게 있어야만 프론트에서 다른 서버로 요청을 보낼수 있다.
-app.use(
-  cors({
-    origin: "http://localhost:3080",
-    credentials: true
-  })
-);
+
 
 app.use("/", express.static("uploads"));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
-app.use(cookie("cookiesecret"));
+app.use(cookie(process.env.COOKIE_SECRET));
 app.use(
   session({
     resave: false,
     saveUninitialized: false,
-    secret: "cookiesecret",
+    secret: process.env.COOKIE_SECRET,
     cookie: {
       httpOnly: true,
-      secure: false
+      secure: false,
+      domain: prod && '.doki3.com',
     }
   })
 );
@@ -61,6 +81,6 @@ app.post("/post", (req, res) => {
   if (req.isAuthenticated()) {}
 });
 
-app.listen(3085, () => {
+app.listen(prod ? process.env.PORT : 3085, () => {
   console.log(`백엔드 서버 ${3085}번 포트에서 작동중`);
 });
