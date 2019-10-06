@@ -49,7 +49,7 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
     const hash = await bcrypt.hash(req.body.password, 12); // 암호화 패스워드
     const exUser = await db.User.findOne({
       where: {
-        email: req.body.email
+        userId: req.body.userId
       }
     }); // 이메일 체크
     if (exUser) {
@@ -61,7 +61,7 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
     }
 
     await db.User.create({
-      email: req.body.email,
+      userId: req.body.userId,
       password: hash,
       nickname: req.body.nickname
     });
@@ -83,7 +83,7 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
           where: {
             id: user.id
           },
-          attributes: ["id", "email", "nickname"],
+          attributes: ["id", "userId", "nickname"],
           include: [{
               model: db.Post,
               attributes: ["id"]
@@ -128,7 +128,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         where: {
           id: user.id
         },
-        attributes: ["id", "email", "nickname"],
+        attributes: ["id", "userId", "nickname"],
         include: [{
             model: db.Post,
             attributes: ["id"]

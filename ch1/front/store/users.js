@@ -92,7 +92,7 @@ export const actions = {
   }, payload) {
     return this.$axios.post(
       '/user', {
-        email: payload.email,
+        userId: payload.userId,
         password: payload.password,
         nickname: payload.nickname
       }, {
@@ -107,7 +107,7 @@ export const actions = {
     return this.$axios
       .post(
         '/user/login', {
-          email: payload.email,
+          userId: payload.userId,
           password: payload.password
         }, {
           withCredentials: true
