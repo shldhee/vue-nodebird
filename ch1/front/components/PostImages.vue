@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     closeModal() {
-      console.log('modal!!!')
       this.imageZoomed = false
     },
     zommImages() {

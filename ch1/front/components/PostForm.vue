@@ -75,12 +75,10 @@ export default {
       this.$refs.imageInput.click()
     },
     onChangeImages(e) {
-      console.log(e.target.files)
       const imageFormData = new FormData()
       ;[].forEach.call(e.target.files, f => {
         imageFormData.append('image', f) // { image: [file1, file2] }
       })
-      console.log(imageFormData)
       this.$store.dispatch('posts/uploadImages', imageFormData)
     },
     onRemoveImage(index) {
