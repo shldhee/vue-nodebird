@@ -170,5 +170,9 @@ typings/
 .dynamodb/
 
 vue-nodebird.pem
+<<<<<<< HEAD
 
 .env
+=======
+uploads
+>>>>>>> bf08154ebb10659b89ae1edd107d4708cee024ee

@@ -4,6 +4,7 @@
     <v-img
       :src="images[0].src"
       aspect-ratio="2"
+      contain
       @click="zoomImages"
     />
     <image-zoom v-if="imageZoomed" :images="images" :close-modal="closeModal" />
@@ -12,12 +13,14 @@
     <v-img
       :src="images[0].src"
       aspect-ratio="2"
+      contain
       style="flex: 1"
       @click="zoomImages"
     />
     <v-img
       :src="images[1].src"
       aspect-ratio="2"
+      contain
       style="flex: 1"
       @click="zoomImages"
     />
@@ -28,6 +31,7 @@
       style="flex: 1"
       :src="images[0].src"
       aspect-ratio="2"
+      contain
       @click="zoomImages"
     />
     <div style="flex: 1;align-items: center;justify-content: center;display:flex" @click="zoomImages">

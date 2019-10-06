@@ -1,9 +1,10 @@
 const express = require('express');
+
 const db = require('../models');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => { // GET /api/posts
+router.get('/', async (req, res, next) => { // GET /posts?offset=10&limit=10
   try {
     let where = {};
     if (parseInt(req.query.lastId, 10)) {
@@ -22,7 +23,6 @@ router.get('/', async (req, res, next) => { // GET /api/posts
         model: db.Image,
       }, {
         model: db.User,
-        through: 'Like',
         as: 'Likers',
         attributes: ['id'],
       }, {
@@ -35,13 +35,14 @@ router.get('/', async (req, res, next) => { // GET /api/posts
           model: db.Image,
         }],
       }],
-      order: [['createdAt', 'DESC']], // DESC는 내림차순, ASC는 오름차순
-      limit: parseInt(req.query.limit, 10),
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(req.query.limit, 10) || 10,
     });
+    console.log(posts.length);
     res.json(posts);
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 });
 

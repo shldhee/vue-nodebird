@@ -1,11 +1,51 @@
 module.exports = {
+  head: {
+    title: 'NodeBird',
+    meta: [{
+      charset: 'UTF-8',
+    }, {
+      name: 'viewport',
+      content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+    }, {
+      'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+    }, {
+      name: 'description', content: '제로초의 NodeBird SNS',
+    }, {
+      name: 'og:title', content: 'NodeBird',
+    }, {
+      name: 'og:description', content: '제로초의 NodeBird SNS',
+    }, {
+      property: 'og:type', content: 'website',
+    }, {
+      property: 'og:image', content: 'https://vue.nodebird.com/vue-nodebird.png',
+    }],
+    link: [
+      { rel: 'shortcut icon', href: '/vue-nodebird.png' },
+    ],
+  },
   modules: [
     '@nuxtjs/axios',
   ],
-  devModules: [
+  buildModules: [
     '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
   ],
-  vuetify: {
-
+  vuetify: {},
+  moment: {
+    locales: ['ko'],
+  },
+  build: {
+    analyze: false,
+    extend(config, { isClient }) {
+      console.log('webpack', config);
+    },
+  },
+  axios: {
+    browserBaseURL: 'https://api.nodebird.com/api',
+    baseURL: 'https://api.nodebird.com/api',
+    https: false,
+  },
+  server: {
+    port: process.env.PORT || 3081,
   },
 };
