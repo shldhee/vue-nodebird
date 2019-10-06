@@ -10,22 +10,28 @@ module.exports = {
       'http-equiv': 'X-UA-Compatible',
       content: 'IE=edge',
     }, {
+      hid: 'desc',
       name: 'description',
       content: '제로초의 NodeBird SNS'
     }, {
+      hid: 'ogtitle',
       name: 'og:title',
       content: 'NodeBird',
 
     }, {
+      hid: 'ogdesc',
       name: 'og:description',
       content: '제로초의 NodeBird SNS',
     }, {
+      hid: 'ogtype',
       property: 'og:type',
       content: 'website',
     }, {
+      hid: 'ogimage',
       property: 'og:image',
       content: 'https://vue.nodebird.com/vue-nodebird.png'
     }, {
+      hid: 'ogurl',
       property: 'og:url',
       content: 'https://vue.nodebird.com'
     }]

@@ -54,7 +54,8 @@ export default {
           property: 'og:url',
           content: `https://vue.nodebird.com/post/${this.post.id}`
         }
-      ]
+      ],
+      link: [{ rel: 'shortcut icon', href: '/vue-nodebird.png' }]
     }
   }
 }
