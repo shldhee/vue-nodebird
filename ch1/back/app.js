@@ -14,7 +14,7 @@ const postsRouter = require("./routes/posts");
 const hashtagRouter = require("./routes/hashtag");
 const app = express();
 
-db.sequelize.sync();
+db.sequelize.sync({});
 passportConfig();
 
 app.use(morgan("dev"));

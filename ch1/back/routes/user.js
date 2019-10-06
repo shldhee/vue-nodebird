@@ -2,7 +2,10 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const db = require("../models");
-const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const {
+  isLoggedIn,
+  isNotLoggedIn
+} = require("./middlewares");
 const router = express.Router();
 
 router.get("/", isLoggedIn, async (req, res, next) => {
@@ -13,9 +16,10 @@ router.get("/", isLoggedIn, async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const user = await db.User.findOne({
-      where: { id: parseInt(req.params.id, 10) },
-      include: [
-        {
+      where: {
+        id: parseInt(req.params.id, 10)
+      },
+      include: [{
           model: db.Post,
           as: "Posts",
           attributes: ["id"]
@@ -76,10 +80,11 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
           return next(err);
         }
         const fullUser = await db.User.findOne({
-          where: { id: user.id },
+          where: {
+            id: user.id
+          },
           attributes: ["id", "email", "nickname"],
-          include: [
-            {
+          include: [{
               model: db.Post,
               attributes: ["id"]
             },
@@ -120,10 +125,11 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         return next(err);
       }
       const fullUser = await db.User.findOne({
-        where: { id: user.id },
+        where: {
+          id: user.id
+        },
         attributes: ["id", "email", "nickname"],
-        include: [
-          {
+        include: [{
             model: db.Post,
             attributes: ["id"]
           },
@@ -163,8 +169,7 @@ router.get("/:id/posts", async (req, res, next) => {
     }
     const posts = await db.Post.findAll({
       where,
-      include: [
-        {
+      include: [{
           model: db.User,
           attributes: ["id", "nickname"]
         },
@@ -189,7 +194,9 @@ router.get("/:id/posts", async (req, res, next) => {
 router.post("/:id/follow", isLoggedIn, async (req, res, next) => {
   try {
     const me = await db.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     });
     await me.addFollowing(req.params.id);
     res.send(req.params.id);
@@ -202,7 +209,9 @@ router.post("/:id/follow", isLoggedIn, async (req, res, next) => {
 router.delete("/:id/follow", isLoggedIn, async (req, res, next) => {
   try {
     const me = await db.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     });
     await me.removeFollowing(req.params.id);
     res.send(req.params.id);
@@ -214,14 +223,13 @@ router.delete("/:id/follow", isLoggedIn, async (req, res, next) => {
 
 router.patch("/nickname", isLoggedIn, async (req, res, next) => {
   try {
-    await db.User.update(
-      {
-        nickname: req.body.nickname
-      },
-      {
-        where: { id: req.user.id }
+    await db.User.update({
+      nickname: req.body.nickname
+    }, {
+      where: {
+        id: req.user.id
       }
-    );
+    });
     res.send(req.body.nickname);
   } catch (e) {
     console.error(e);
@@ -232,7 +240,9 @@ router.patch("/nickname", isLoggedIn, async (req, res, next) => {
 router.get("/:id/followings", isLoggedIn, async (req, res, next) => {
   try {
     const user = await db.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     });
     const followings = await user.getFollowings({
       attributes: ["id", "nickname"],
@@ -249,7 +259,9 @@ router.get("/:id/followings", isLoggedIn, async (req, res, next) => {
 router.get("/:id/followers", isLoggedIn, async (req, res, next) => {
   try {
     const user = await db.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     });
     const followers = await user.getFollowers({
       attributes: ["id", "nickname"],
@@ -266,7 +278,9 @@ router.get("/:id/followers", isLoggedIn, async (req, res, next) => {
 router.delete("/:id/follower", isLoggedIn, async (req, res, next) => {
   try {
     const me = await db.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     });
     await me.removeFollower(req.params.id);
     res.send(req.params.id);
