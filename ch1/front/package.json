@@ -11,6 +11,7 @@
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "nuxt": "^2.9.1",
+    "pm2": "^3.5.1",
     "prettier": "^1.18.2",
     "vue": "^2.6.10",
     "vuetify": "^2.0.10"
@@ -27,7 +28,8 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "PORT=80 NODE_ENV=production node server",
+    "prestart": "npm run build",
+    "start": "PORT=80 NODE_ENV=production pm2 start server",
     "lint": "eslint **/*"
   },
   "author": "",
