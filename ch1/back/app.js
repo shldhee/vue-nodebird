@@ -43,10 +43,7 @@ if (prod) {
     })
   );
 }
-
 // 이게 있어야만 프론트에서 다른 서버로 요청을 보낼수 있다.
-
-
 app.use("/", express.static("uploads"));
 app.use(express.json());
 app.use(express.urlencoded({
@@ -77,10 +74,6 @@ app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/hashtag", hashtagRouter);
 
-app.post("/post", (req, res) => {
-  if (req.isAuthenticated()) {}
-});
-
 app.listen(prod ? process.env.PORT : 3085, () => {
-  console.log(`백엔드 서버 ${3085}번 포트에서 작동중`);
+  console.log(`백엔드 서버 ${prod ? process.env.PORT : 3085}번 포트에서 작동중.`);
 });
