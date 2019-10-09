@@ -90,16 +90,19 @@ export const actions = {
     commit,
     state
   }, payload) {
-    return this.$axios.post(
-      '/user', {
+    this.$axios.post('/user', {
         userId: payload.userId,
+        nickname: payload.nickname,
         password: payload.password,
-        nickname: payload.nickname
       }, {
-        withCredentials: true
-      }
-    )
-    commit('setMe', payload)
+        withCredentials: true,
+      })
+      .then((res) => {
+        commit('setMe', res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   logIn({
     commit
