@@ -1,25 +1,30 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path");
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+
+const db = require("../models");
 const {
   isLoggedIn
 } = require("./middlewares");
-const path = require("path");
-
-const db = require("../models");
 
 const router = express.Router();
 
+AWS.config.update({
+  region: 'ap-northeast-2',
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+})
+
 const upload = multer({
   // 나중에 s3, google cloud 사용시 변경
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads");
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: 'vue-dokibird',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}${path.basename(file.originalname)}`)
     },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext); // icon.png, basename = icon, ext = .png
-      done(null, basename + Date.now() + ext);
-    }
   }),
   limit: {
     fileSize: 20 * 1024 * 1024
@@ -28,7 +33,7 @@ const upload = multer({
 
 router.post("/images", isLoggedIn, upload.array("image"), (req, res) => {
   // req.files = [{ filename: 'icon20190826.png'}, { filename: 'background20190826.png'}];
-  res.json(req.files.map(v => v.filename));
+  res.json(req.files.map(v => v.location));
 });
 
 router.post("/", isLoggedIn, async (req, res, next) => {
