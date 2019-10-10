@@ -44,28 +44,26 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", isNotLoggedIn, async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => { // 회원가입
   try {
-    const hash = await bcrypt.hash(req.body.password, 12); // 암호화 패스워드
+    const hash = await bcrypt.hash(req.body.password, 12);
     const exUser = await db.User.findOne({
       where: {
-        userId: req.body.userId
-      }
-    }); // 이메일 체크
-    if (exUser) {
-      // 회원가입이되어있으면
+        userId: req.body.userId,
+      },
+    });
+    if (exUser) { // 이미 회원가입되어있으면
       return res.status(403).json({
-        errorCode: 1, // 에러코드 정의
-        message: "이미 회원가입되어있습니다."
+        errorCode: 1,
+        message: '이미 회원가입되어있습니다.',
       });
     }
-
     await db.User.create({
       userId: req.body.userId,
       password: hash,
-      nickname: req.body.nickname
-    });
-    passport.authenticate("local", (err, user, info) => {
+      nickname: req.body.nickname,
+    }); // HTTP STATUS CODE
+    passport.authenticate('local', (err, user, info) => {
       if (err) {
         console.error(err);
         return next(err);
@@ -73,8 +71,7 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
       if (info) {
         return res.status(401).send(info.reason);
       }
-      return req.login(user, async err => {
-        // 세션에다 사용자 정보 저장 어떻게 저장? serializeUser로 저장~
+      return req.login(user, async (err) => { // 세션에다 사용자 정보 저장 (어떻게? serializeUser)
         if (err) {
           console.error(err);
           return next(err);
@@ -83,34 +80,31 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
           where: {
             id: user.id
           },
-          attributes: ["id", "userId", "nickname"],
+          attributes: ['id', 'userId', 'nickname'],
           include: [{
-              model: db.Post,
-              attributes: ["id"]
-            },
-            {
-              model: db.User,
-              as: "Followings",
-              attributes: ["id"]
-            },
-            {
-              model: db.User,
-              as: "Followers",
-              attributes: ["id"]
-            }
-          ]
+            model: db.Post,
+            attributes: ['id'],
+          }, {
+            model: db.User,
+            as: 'Followings',
+            attributes: ['id'],
+          }, {
+            model: db.User,
+            as: 'Followers',
+            attributes: ['id'],
+          }],
         });
         return res.json(fullUser);
       });
-    })(req, res, next); // localStragey 실행
+    })(req, res, next);
   } catch (err) {
     console.log(err);
     return next(err);
   }
 });
 
-router.post("/login", isNotLoggedIn, (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
       return next(err);
@@ -118,8 +112,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.login(user, async err => {
-      // 세션에다 사용자 정보 저장 어떻게 저장? serializeUser로 저장~
+    return req.login(user, async (err) => { // 세션에다 사용자 정보 저장 (어떻게? serializeUser)
       if (err) {
         console.error(err);
         return next(err);
@@ -128,26 +121,23 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         where: {
           id: user.id
         },
-        attributes: ["id", "userId", "nickname"],
+        attributes: ['id', 'userId', 'nickname'],
         include: [{
-            model: db.Post,
-            attributes: ["id"]
-          },
-          {
-            model: db.User,
-            as: "Followings",
-            attributes: ["id"]
-          },
-          {
-            model: db.User,
-            as: "Followers",
-            attributes: ["id"]
-          }
-        ]
+          model: db.Post,
+          attributes: ['id'],
+        }, {
+          model: db.User,
+          as: 'Followings',
+          attributes: ['id'],
+        }, {
+          model: db.User,
+          as: 'Followers',
+          attributes: ['id'],
+        }],
       });
       return res.json(fullUser);
     });
-  })(req, res, next); // localStragey 실행
+  })(req, res, next);
 });
 
 
