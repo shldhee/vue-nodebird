@@ -1,4 +1,5 @@
 exports.isLoggedIn = (req, res, next) => {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next(); // 다음 미들웨어로 넘어가라 인수가 없을때 인수가 있을때는 에러처리로 간다
   }

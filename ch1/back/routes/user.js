@@ -150,6 +150,9 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
   })(req, res, next); // localStragey 실행
 });
 
+
+
+
 router.post("/logout", isLoggedIn, (req, res, next) => {
   if (req.isAuthenticated) {
     req.logout(); // 필수
