@@ -103,41 +103,63 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // 회원가입
   }
 });
 
-router.post('/login', isNotLoggedIn, (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      console.error(err);
-      return next(err);
+router.post('/', isNotLoggedIn, async (req, res, next) => { // 회원가입
+  try {
+    const hash = await bcrypt.hash(req.body.password, 12);
+    const exUser = await db.User.findOne({
+      where: {
+        userId: req.body.userId,
+      },
+    });
+    if (exUser) { // 이미 회원가입되어있으면
+      return res.status(403).json({
+        errorCode: 1,
+        message: '이미 회원가입되어있습니다.',
+      });
     }
-    if (info) {
-      return res.status(401).send(info.reason);
-    }
-    return req.login(user, async (err) => { // 세션에다 사용자 정보 저장 (어떻게? serializeUser)
+    await db.User.create({
+      userId: req.body.userId,
+      password: hash,
+      nickname: req.body.nickname,
+    }); // HTTP STATUS CODE
+    passport.authenticate('local', (err, user, info) => {
       if (err) {
         console.error(err);
         return next(err);
       }
-      const fullUser = await db.User.findOne({
-        where: {
-          id: user.id
-        },
-        attributes: ['id', 'userId', 'nickname'],
-        include: [{
-          model: db.Post,
-          attributes: ['id'],
-        }, {
-          model: db.User,
-          as: 'Followings',
-          attributes: ['id'],
-        }, {
-          model: db.User,
-          as: 'Followers',
-          attributes: ['id'],
-        }],
+      if (info) {
+        return res.status(401).send(info.reason);
+      }
+      return req.login(user, async (err) => { // 세션에다 사용자 정보 저장 (어떻게? serializeUser)
+        if (err) {
+          console.error(err);
+          return next(err);
+        }
+        const fullUser = await db.User.findOne({
+          where: {
+            id: user.id
+          },
+          attributes: ['id', 'userId', 'nickname'],
+          include: [{
+            model: db.Post,
+            attributes: ['id'],
+          }, {
+            model: db.User,
+            as: 'Followings',
+            attributes: ['id'],
+          }, {
+            model: db.User,
+            as: 'Followers',
+            attributes: ['id'],
+          }],
+        });
+        return res.json(fullUser);
       });
-      return res.json(fullUser);
-    });
-  })(req, res, next);
+    })(req, res, next);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
 });
 
 
