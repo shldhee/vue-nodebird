@@ -51,7 +51,7 @@ export default {
       passwordCheck: '',
       nickname: '',
       terms: false,
-      userIOdRules: [v => !!v || '아이디는 필수입니다.'],
+      userIdRules: [v => !!v || '아이디는 필수입니다.'],
       nicknameRules: [v => !!v || '닉네임은 필수입니다.'],
       passwordRules: [v => !!v || '비밀번호는 필수입니다.'],
       passwordCheckRules: [
