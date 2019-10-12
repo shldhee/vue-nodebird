@@ -47,12 +47,12 @@ export default {
           property: 'og:image',
           content: this.post.Images[0]
             ? this.post.Images[0].src
-            : 'https://vue.nodebird.com/vue-nodebird.png'
+            : 'https://doki3.com/vue-nodebird.png'
         },
         {
           hid: 'ogurl',
           property: 'og:url',
-          content: `https://vue.nodebird.com/post/${this.post.id}`
+          content: `https://doki3.com/post/${this.post.id}`
         }
       ],
       link: [{ rel: 'shortcut icon', href: '/vue-nodebird.png' }]
