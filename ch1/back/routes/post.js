@@ -31,7 +31,9 @@ const upload = multer({
   }
 });
 
+console.log(upload, "upload!!!!");
 router.post("/images", isLoggedIn, upload.array("image"), (req, res) => {
+  console.log("hoithoit");
   // req.files = [{ filename: 'icon20190826.png'}, { filename: 'background20190826.png'}];
   res.json(req.files.map(v => v.location));
 });
