@@ -54,14 +54,14 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false,
-    domain: prod && '.nodebird.com',
+    domain: prod && '.doki3.com',
   },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-  res.status(200).send('안녕 제로초');
+  res.status(200).send('안녕 doki3');
 });
 
 app.use("/user", userRouter);
