@@ -2,16 +2,39 @@
   <div>
     <div v-if="images.length === 0"></div>
     <div v-else-if="images.length === 1">
-      <v-img :src="images[0].src" contain aspect-ratio="2" @click="zommImages" />
+      <v-img
+        :src="images[0].src.replace(/original\//, 'thumb/')"
+        contain
+        aspect-ratio="2"
+        @click="zommImages"
+      />
       <image-zoom v-if="imageZoomed" :close-modal="closeModal" :images="images" />
     </div>
     <div v-else-if="images.length === 2" style="display: flex">
-      <v-img :src="images[0].src" contain aspect-ratio="2" style="flex: 1" @click="zommImages" />
-      <v-img :src="images[1].src" contain aspect-ratio="2" style="flex: 1" @click="zommImages" />
+      <v-img
+        :src="images[0].src.replace(/original\//, 'thumb/')"
+        contain
+        aspect-ratio="2"
+        style="flex: 1"
+        @click="zommImages"
+      />
+      <v-img
+        :src="images[1].src.replace(/original\//, 'thumb/')"
+        contain
+        aspect-ratio="2"
+        style="flex: 1"
+        @click="zommImages"
+      />
       <image-zoom v-if="imageZoomed" :close-modal="closeModal" :images="images" />
     </div>
     <div v-else-if="images.length > 2" style="display: flex">
-      <v-img :src="images[0].src" contain aspect-ratio="2" style="flex: 1" @click="zommImages" />
+      <v-img
+        :src="images[0].src.replace(/original\//, 'thumb/')"
+        contain
+        aspect-ratio="2"
+        style="flex: 1"
+        @click="zommImages"
+      />
       <div
         @click="zommImages"
         style="flex: 1; align-items: center; justify-content: center; display: flex"
