@@ -42,7 +42,7 @@ export const mutations = {
   concatImagePaths(state, payload) {
     state.imagePaths = state.imagePaths.concat(payload)
   },
-  removeImagePaht(state, payload) {
+  removeImagePath(state, payload) {
     state.imagePaths.splice(payload, 1)
   },
   unlikePost(state, payload) {
