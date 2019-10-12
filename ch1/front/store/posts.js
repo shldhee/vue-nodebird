@@ -223,7 +223,9 @@ export const actions = {
       .then(res => {
         commit('concatImagePaths', res.data)
       })
-      .catch(() => {})
+      .catch((err) => {
+        console.error(err);
+      });
   },
   retweet({
     commit
