@@ -29,7 +29,7 @@ if (prod) {
   app.use(morgan("combined"));
   app.use(
     cors({
-      origin: "http://doki3.com",
+      origin: "https://doki3.com",
       credentials: true
     })
   );
@@ -55,7 +55,7 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
-    secure: false,
+    secure: prod,
     domain: prod && '.doki3.com',
   },
 }));

@@ -57,8 +57,8 @@ module.exports = {
   },
   vuetify: {},
   axios: {
-    browserBaseURL: process.env.NODE_ENV === 'production' ? "http://api.doki3.com" : "http://localhost:3085",
-    baseURL: process.env.NODE_ENV === 'production' ? "http://api.doki3.com" : "http://localhost:3085",
+    browserBaseURL: process.env.NODE_ENV === 'production' ? "https://api.doki3.com" : "http://localhost:3085",
+    baseURL: process.env.NODE_ENV === 'production' ? "https://api.doki3.com" : "http://localhost:3085",
     https: false
   },
   server: {
