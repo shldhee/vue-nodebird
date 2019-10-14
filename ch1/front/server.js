@@ -2,10 +2,12 @@ const {
   Nuxt,
   Builder
 } = require('nuxt');
+const https = require('http');
+const http = require('https');
 
 const app = require('express')();
 const isProd = (process.env.NODE_ENV === 'production');
-const port = process.env.PORT || 3080;
+const port = process.env.PORT || 3081;
 
 // We instantiate Nuxt.js with the options
 const config = require('./nuxt.config.js');
@@ -25,6 +27,33 @@ if (config.dev) {
 
 function listen() {
   // Listen the server
-  app.listen(port);
-  console.log('Server listening on `localhost:' + port + '`.');
+  if (isProd) {
+    const lex = require('greenlock-express').create({
+      version: 'draft-11',
+      configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
+      server: 'https://acme-v02.api.letsencrypt.org/directory',
+      email: 'posdevgrant@gmail.com',
+      store: require('greenlock-store-fs'),
+      approveDomains: (opts, certs, cb) => {
+        if (certs) {
+          opts.domains = ['doki3.com', 'www.doki3.com'];
+        } else {
+          opts.email = 'posdevgrant@gmail.com';
+          opts.agreeTos = true;
+        }
+        cb(null, {
+          options: opts,
+          certs
+        });
+      },
+      renewWithin: 81 * 24 * 60 * 60 * 1000,
+      renewBy: 80 * 24 * 60 * 60 * 1000,
+    });
+    https.createServer(lex.httpsOptions, lex.middleware(app)).listen(443);
+    http.createServer(lex.middleware(require('redirect-https')())).listen(80);
+  } else {
+    app.listen(port, () => {
+      console.log(`server is running on ${port}`);
+    });
+  }
 }
